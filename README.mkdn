@@ -11,3 +11,7 @@ Yes, this is almost the same as [pwkeeper](https://github.com/murr4y/pwkeeper/),
 ## Details
 
 Pywkeeper is thoroughly documented at the [github wiki](https://github.com/murr4y/pywkeeper/wiki).
+
+## Todo: Phone app
+
+I plan to develop a phone app. This will require an additional synchronization feature, but otherwise it should work fairly similar to the terminal app.
