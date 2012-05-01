@@ -43,7 +43,7 @@ def generate():
     print()
 
 if __name__ == '__main__':
-    p = optparse.OptionParser()
+    p = optparse.OptionParser(usage="usage: %prog [options] [generate|save|edit]")
     p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
     options, arguments = p.parse_args()
     if len(arguments) == 0:
