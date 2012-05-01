@@ -90,7 +90,7 @@ def generate():
     return pw
 
 if __name__ == '__main__':
-    p = optparse.OptionParser(usage="usage: %prog [options] [edit|save|generate]")
+    p = optparse.OptionParser(usage="usage: %prog [options] [add|edit|save|generate|<search>]")
     p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
     p.add_option("-p", help="Show passwords when searching", action='store_true')
     options, arguments = p.parse_args()
