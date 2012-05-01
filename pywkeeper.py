@@ -3,6 +3,7 @@ import json
 import os
 import optparse
 import random
+import shutil
 
 from crypto import *
 from file_io import *
@@ -31,10 +32,11 @@ def save():
         print("There's no plaintext file to save!")
         print("Tried %s" % os.path.abspath(DECRYPTED_FILE))
         return
+    shutil.copyfile(ENCRYPTED_FILE, ENCRYPTED_BACKUP_FILE)
     iv, encrypted = encrypt(bytes)
     write_file(ENCRYPTED_FILE, iv + encrypted)
     os.unlink(DECRYPTED_FILE)
-    print("Removed plaintext and saved encrypted file.")
+    print("Removed plaintext, backed up and saved encrypted file.")
 
 def generate():
     length = options.n if options.n else DEFAULT_PASSWORD_LENGTH
