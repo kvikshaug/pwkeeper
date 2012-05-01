@@ -89,11 +89,36 @@ def generate():
         pw += random.choice(KEY_CHARS)
     return pw
 
+def initialize():
+    options.n = 32 # Pretend user set length to 32 for generate()
+    print()
+    print("Welcome! Looks like this is your first time using Pywkeeper.")
+    print("===============================================================")
+    print("You'll need to give a 16/24/32-character long key used to encrypt your passwords.")
+    print("Here's a randomly generated one: %s" % generate())
+    print()
+    print("Note: Every time you save to the encrypted file, you can specify a new key.")
+    print("Warning: If you lose this key, you lose all the passwords saved in the encrypted file.")
+    print()
+    iv, encrypted = encrypt(multiple_of('[]'.encode(), BLOCK_LENGTH))
+    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
+    print()
+    print("Passwords are now stored in '%s'." % ENCRYPTED_FILE)
+    print("Check out the github wiki at https://github.com/murr4y/pywkeeper/wiki for usage help.")
+    print()
+    print("DON'T LOSE YOUR DECRYPTION KEY!")
+
 if __name__ == '__main__':
     p = optparse.OptionParser(usage="usage: %prog [options] [add|edit|save|generate|<search>]")
     p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
     p.add_option("-p", help="Show passwords when searching", action='store_true')
     options, arguments = p.parse_args()
+
+    if not os.path.exists(DIR):
+        os.makedirs(DIR)
+        initialize()
+        exit()
+
     if len(arguments) == 0:
         p.print_help()
         exit()
