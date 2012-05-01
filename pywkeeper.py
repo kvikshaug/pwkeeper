@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-import json
-import os
-import optparse
-import random
-import shutil
+import json, os, optparse, random, shutil
 
 from crypto import *
 from file_io import *
