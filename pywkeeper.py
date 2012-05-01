@@ -30,12 +30,16 @@ def main():
         edit()
 
 def save():
-    bytes = multiple_of(read_file(DECRYPTED_FILE), BLOCK_LENGTH)
+    try:
+        bytes = multiple_of(read_file(DECRYPTED_FILE), BLOCK_LENGTH)
+    except IOError:
+        print("There's no plaintext file to save!")
+        print("Tried %s" % os.path.abspath(DECRYPTED_FILE))
+        return
     iv, encrypted = encrypt(bytes)
     write_file(ENCRYPTED_FILE, iv + encrypted)
     os.unlink(DECRYPTED_FILE)
-    print("Removed %s" % os.path.abspath(DECRYPTED_FILE))
-    print("Wrote encrypted data to %s" % os.path.abspath(ENCRYPTED_FILE))
+    print("Removed plaintext and saved encrypted file.")
 
 def edit():
     bytes = decrypt()
