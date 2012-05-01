@@ -15,7 +15,7 @@ arguments = None
 def edit():
     bytes = decrypt()
     try:
-        bytes = json.dumps(json.loads(bytes.decode('utf-8')), indent=4).encode()
+        bytes = json.dumps(json.loads(bytes.decode('utf-8')), indent=4, ensure_ascii=False)
     except ValueError:
         print("Warning: Couldn't parse the content as JSON. Skipping pretty-printing.")
     write_file(DECRYPTED_FILE, 'wt', bytes)
