@@ -13,12 +13,9 @@ options = None
 arguments = None
 
 def main():
-    if arguments[0] == 'edit':
-        edit()
-    elif arguments[0] == 'save':
-        save()
-    elif arguments[0] == 'generate':
-        generate()
+    if arguments[0] == 'edit':       edit()
+    elif arguments[0] == 'save':     save()
+    elif arguments[0] == 'generate': generate()
 
 def edit():
     bytes = decrypt()
