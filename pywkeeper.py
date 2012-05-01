@@ -55,7 +55,7 @@ def write_file(file, bytes):
 
 def get_cipher(iv, text):
     try:
-        key = open(KEY_FILE, 'rb').read()
+        key = open(KEY_FILE, 'rb').read().strip()
     except IOError:
         key = input(text)
     return AES.new(key, AES.MODE_CBC, iv)
