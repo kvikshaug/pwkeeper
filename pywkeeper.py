@@ -18,19 +18,19 @@ def edit():
         bytes = json.dumps(json.loads(bytes.decode('utf-8')), indent=4).encode()
     except ValueError:
         print("Warning: Couldn't parse the content as JSON. Skipping pretty-printing.")
-    write_file(DECRYPTED_FILE, bytes)
+    write_file(DECRYPTED_FILE, 'wt', bytes)
     print("Plaintext written to: %s" % os.path.abspath(DECRYPTED_FILE))
 
 def save():
     try:
-        bytes = multiple_of(read_file(DECRYPTED_FILE), BLOCK_LENGTH)
+        bytes = multiple_of(read_file(DECRYPTED_FILE, 'rt').encode(), BLOCK_LENGTH)
     except IOError:
         print("There's no plaintext file to save!")
         print("Tried %s" % os.path.abspath(DECRYPTED_FILE))
         return
     shutil.copyfile(ENCRYPTED_FILE, ENCRYPTED_BACKUP_FILE)
     iv, encrypted = encrypt(bytes)
-    write_file(ENCRYPTED_FILE, iv + encrypted)
+    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
     os.unlink(DECRYPTED_FILE)
     print("Removed plaintext, backed up and saved encrypted file.")
 

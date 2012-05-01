@@ -1,10 +1,10 @@
-def read_file(file):
-    f = open(file, 'rb')
+def read_file(file, mode):
+    f = open(file, mode)
     b = f.read()
     f.close()
     return b
 
-def write_file(file, bytes):
-    f = open(file, 'wb')
+def write_file(file, mode, bytes):
+    f = open(file, mode)
     f.write(bytes)
     f.close()
