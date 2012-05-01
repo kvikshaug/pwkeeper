@@ -39,7 +39,7 @@ def search(phrases):
     for i in range(1, len(hits)+1):
         user = hits[i-1]['user']
         if user != '':
-            user = "\n   Brukernavn: '%s'" % user
+            user = "\n   Username: '%s'" % user
         print("%s. %s%s" % (i, hits[i-1]['usage'], user))
         if options.p:
             for password in hits[i-1]['passwords']:
