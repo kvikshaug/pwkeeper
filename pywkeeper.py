@@ -12,11 +12,6 @@ from settings import *
 options = None
 arguments = None
 
-def main():
-    if arguments[0] == 'edit':       edit()
-    elif arguments[0] == 'save':     save()
-    elif arguments[0] == 'generate': generate()
-
 def edit():
     bytes = decrypt()
     write_file(DECRYPTED_FILE, bytes)
@@ -47,4 +42,7 @@ if __name__ == '__main__':
     options, arguments = p.parse_args()
     if len(arguments) == 0:
         arguments.append(DEFAULT_ARGUMENT)
-    main()
+
+    if arguments[0] == 'edit':       edit()
+    elif arguments[0] == 'save':     save()
+    elif arguments[0] == 'generate': generate()
