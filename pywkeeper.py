@@ -12,6 +12,21 @@ from settings import *
 options = None
 arguments = None
 
+def add():
+    passwords = json.loads(decrypt().decode('utf-8'))
+    usage = input("Usage: ")
+    user = input("Username: ")
+    rand = generate()
+    password = input("Password [%s]: " % rand)
+    password = rand if password == '' else password
+    passwords.append({
+        'usage': usage,
+        'user': user,
+        'passwords': [password]
+    })
+    encrypt_and_save(json.dumps(passwords).encode())
+    print("Added new password to encrypted file.")
+
 def edit():
     bytes = decrypt()
     try:
@@ -23,22 +38,26 @@ def edit():
 
 def save():
     try:
-        bytes = multiple_of(read_file(DECRYPTED_FILE, 'rt').encode(), BLOCK_LENGTH)
+        bytes = read_file(DECRYPTED_FILE, 'rt').encode()
     except IOError:
         print("There's no plaintext file to save!")
         print("Tried %s" % os.path.abspath(DECRYPTED_FILE))
         return
-    shutil.copyfile(ENCRYPTED_FILE, ENCRYPTED_BACKUP_FILE)
-    iv, encrypted = encrypt(bytes)
-    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
+    encrypt_and_save(bytes)
     os.unlink(DECRYPTED_FILE)
     print("Removed plaintext, backed up and saved encrypted file.")
 
+def encrypt_and_save(bytes):
+    shutil.copyfile(ENCRYPTED_FILE, ENCRYPTED_BACKUP_FILE)
+    iv, encrypted = encrypt(multiple_of(bytes, BLOCK_LENGTH))
+    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
+
 def generate():
     length = options.n if options.n else DEFAULT_PASSWORD_LENGTH
+    pw = ''
     for i in range(length):
-        print(random.choice(KEY_CHARS), end='')
-    print()
+        pw += random.choice(KEY_CHARS)
+    return pw
 
 if __name__ == '__main__':
     p = optparse.OptionParser(usage="usage: %prog [options] [edit|save|generate]")
@@ -47,6 +66,7 @@ if __name__ == '__main__':
     if len(arguments) == 0:
         arguments.append(DEFAULT_ARGUMENT)
 
-    if arguments[0] == 'edit':       edit()
+    if arguments[0] == 'add':        add()
+    elif arguments[0] == 'edit':     edit()
     elif arguments[0] == 'save':     save()
-    elif arguments[0] == 'generate': generate()
+    elif arguments[0] == 'generate': print(generate())
