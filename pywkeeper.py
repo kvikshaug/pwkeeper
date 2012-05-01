@@ -24,30 +24,57 @@ DEFAULT_ARGUMENT = 'search'
 def main():
     if arguments[0] == 'generate':
         generate()
+    elif arguments[0] == 'save':
+        save()
+    elif arguments[0] == 'edit':
+        edit()
 
-def get_cipher(iv):
+def save():
+    bytes = multiple_of(read_file(DECRYPTED_FILE), BLOCK_LENGTH)
+    iv, encrypted = encrypt(bytes)
+    write_file(ENCRYPTED_FILE, iv + encrypted)
+    os.unlink(DECRYPTED_FILE)
+    print("Removed %s" % os.path.abspath(DECRYPTED_FILE))
+    print("Wrote encrypted data to %s" % os.path.abspath(ENCRYPTED_FILE))
+
+def edit():
+    bytes = decrypt()
+    write_file(DECRYPTED_FILE, bytes)
+    print("Plaintext written to: %s" % os.path.abspath(DECRYPTED_FILE))
+
+def read_file(file):
+    f = open(file, 'rb')
+    b = f.read()
+    f.close()
+    return b
+
+def write_file(file, bytes):
+    f = open(file, 'wb')
+    f.write(bytes)
+    f.close()
+
+def get_cipher(iv, text):
     try:
         key = open(KEY_FILE, 'rb').read()
     except IOError:
-        key = input("Please enter the decryption key: ")
+        key = input(text)
     return AES.new(key, AES.MODE_CBC, iv)
 
-def encrypt():
-    bytes = multiple_of(open(DECRYPTED_FILE, 'rt').read().encode(), BLOCK_LENGTH)
+def encrypt(bytes):
     iv = os.urandom(16)
-    c = get_cipher(iv)
+    c = get_cipher(iv, "Please enter an encryption key: ")
     return (iv, c.encrypt(bytes))
 
 def decrypt():
     bytes = open(ENCRYPTED_FILE, 'rb').read()
-    c = get_cipher(bytes[:16])
-    return c.decrypt(bytes).decode('utf-8')
+    c = get_cipher(bytes[:16], "Please enter the decryption key: ")
+    return c.decrypt(bytes[16:]).strip(b'\x04')
 
 def multiple_of(bytes, length):
     if len(bytes) % length == 0:
         return bytes
     else:
-        return bytes + (EOT_CHAR * (length - (len(bytes) % length))).encode()
+        return bytes + (EOT_CHAR * (length - (len(bytes) % length)))
 
 def generate():
     if len(arguments) == 2:
