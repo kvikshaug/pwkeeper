@@ -12,5 +12,3 @@ ENCRYPTED_BACKUP_FILE = os.path.dirname(__file__) + '/data/data-last'
 DECRYPTED_FILE = os.path.dirname(__file__) + '/data/tmp'
 
 EOT_CHAR = b'\x04'
-
-DEFAULT_ARGUMENT = 'search'

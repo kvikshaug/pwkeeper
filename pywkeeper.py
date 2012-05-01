@@ -95,7 +95,8 @@ if __name__ == '__main__':
     p.add_option("-p", help="Show passwords when searching", action='store_true')
     options, arguments = p.parse_args()
     if len(arguments) == 0:
-        arguments.append(DEFAULT_ARGUMENT)
+        p.print_help()
+        exit()
 
     if arguments[0] == 'add':        add()
     elif arguments[0] == 'edit':     edit()
