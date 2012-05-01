@@ -13,7 +13,10 @@ DECRYPTED_FILE = 'tmp'
 
 EOT_CHAR = '\x04'
 
-def main(options, arguments):
+options = None
+arguments = None
+
+def main():
     pass
 
 def get_cipher(iv):
@@ -43,4 +46,4 @@ def multiple_of(bytes, length):
 if __name__ == '__main__':
     p = optparse.OptionParser()
     options, arguments = p.parse_args()
-    main(options, arguments)
+    main()
