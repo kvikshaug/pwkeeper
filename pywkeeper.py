@@ -37,16 +37,14 @@ def edit():
     print("Plaintext written to: %s" % os.path.abspath(DECRYPTED_FILE))
 
 def generate():
-    if len(arguments) == 2:
-        length = int(arguments[1])
-    else:
-        length = DEFAULT_PASSWORD_LENGTH
+    length = options.n if options.n else DEFAULT_PASSWORD_LENGTH
     for i in range(length):
         print(random.choice(KEY_CHARS), end='')
     print()
 
 if __name__ == '__main__':
     p = optparse.OptionParser()
+    p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
     options, arguments = p.parse_args()
     if len(arguments) == 0:
         arguments.append(DEFAULT_ARGUMENT)
