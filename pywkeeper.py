@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 from Crypto.Cipher import AES
 import json
 import os
+import optparse
 
 KEY_LENGTH = 256
 BLOCK_LENGTH = 16
@@ -10,6 +12,9 @@ ENCRYPTED_FILE = 'data'
 DECRYPTED_FILE = 'tmp'
 
 EOT_CHAR = '\x04'
+
+def main(options, arguments):
+    pass
 
 def get_cipher(iv):
     try:
@@ -34,3 +39,8 @@ def multiple_of(bytes, length):
         return bytes
     else:
         return bytes + (EOT_CHAR * (length - (len(bytes) % length))).encode()
+
+if __name__ == '__main__':
+    p = optparse.OptionParser()
+    options, arguments = p.parse_args()
+    main(options, arguments)
