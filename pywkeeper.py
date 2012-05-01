@@ -19,6 +19,7 @@ EOT_CHAR = '\x04'
 
 options = None
 arguments = None
+DEFAULT_ARGUMENT = 'search'
 
 def main():
     if arguments[0] == 'generate':
@@ -60,4 +61,6 @@ def generate():
 if __name__ == '__main__':
     p = optparse.OptionParser()
     options, arguments = p.parse_args()
+    if len(arguments) == 0:
+        arguments.append(DEFAULT_ARGUMENT)
     main()
