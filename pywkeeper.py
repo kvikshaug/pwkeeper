@@ -3,9 +3,13 @@ from Crypto.Cipher import AES
 import json
 import os
 import optparse
+import random
 
 KEY_LENGTH = 256
 BLOCK_LENGTH = 16
+
+DEFAULT_PASSWORD_LENGTH = 25
+KEY_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 KEY_FILE = 'key'
 ENCRYPTED_FILE = 'data'
@@ -17,7 +21,8 @@ options = None
 arguments = None
 
 def main():
-    pass
+    if arguments[0] == 'generate':
+        generate()
 
 def get_cipher(iv):
     try:
@@ -42,6 +47,15 @@ def multiple_of(bytes, length):
         return bytes
     else:
         return bytes + (EOT_CHAR * (length - (len(bytes) % length))).encode()
+
+def generate():
+    if len(arguments) == 2:
+        length = int(arguments[1])
+    else:
+        length = DEFAULT_PASSWORD_LENGTH
+    for i in range(length):
+        print(random.choice(KEY_CHARS), end='')
+    print()
 
 if __name__ == '__main__':
     p = optparse.OptionParser()
