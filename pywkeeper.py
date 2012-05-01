@@ -27,6 +27,36 @@ def add():
     encrypt_and_save(json.dumps(passwords).encode())
     print("Added new password to encrypted file.")
 
+def search(phrases):
+    def matches(password, phrase):
+        return phrase.lower() in password['usage'].lower() or phrase.lower() in password['user'].lower()
+    passwords = json.loads(decrypt().decode('utf-8'))
+    hits = []
+    for password in passwords:
+        match = True
+        for phrase in phrases:
+            if not matches(password, phrase):
+                match = False
+                break
+        if match:
+            hits.append(password)
+    for i in range(1, len(hits)+1):
+        user = hits[i-1]['user']
+        if user != '':
+            user = "\n   Brukernavn: '%s'" % user
+        print("%s. %s%s" % (i, hits[i-1]['usage'], user))
+        if options.p:
+            for password in hits[i-1]['passwords']:
+                print("   '%s'" % password)
+        elif len(hits[i-1]['passwords']) > 1:
+            print("   (%s passwords)" % len(hits[i-1]['passwords']))
+    p = os.popen('xsel', 'w')
+    if len(hits) > 0:
+        p.write(hits[0]['passwords'][0])
+    else:
+        print("No hits.")
+    p.close()
+
 def edit():
     bytes = decrypt()
     try:
@@ -62,6 +92,7 @@ def generate():
 if __name__ == '__main__':
     p = optparse.OptionParser(usage="usage: %prog [options] [edit|save|generate]")
     p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
+    p.add_option("-p", help="Show passwords when searching", action='store_true')
     options, arguments = p.parse_args()
     if len(arguments) == 0:
         arguments.append(DEFAULT_ARGUMENT)
@@ -70,3 +101,4 @@ if __name__ == '__main__':
     elif arguments[0] == 'edit':     edit()
     elif arguments[0] == 'save':     save()
     elif arguments[0] == 'generate': print(generate())
+    else:                            search(arguments)
