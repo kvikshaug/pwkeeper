@@ -15,7 +15,7 @@ KEY_FILE = 'key'
 ENCRYPTED_FILE = 'data'
 DECRYPTED_FILE = 'tmp'
 
-EOT_CHAR = '\x04'
+EOT_CHAR = b'\x04'
 
 options = None
 arguments = None
