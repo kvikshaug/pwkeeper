@@ -46,7 +46,7 @@ def search(phrases):
                 print("   '%s'" % password)
         elif len(hits[i-1]['passwords']) > 1:
             print("   (%s passwords)" % len(hits[i-1]['passwords']))
-    p = os.popen('xsel', 'w')
+    p = os.popen(CLIPBOARD_COMMAND, 'w')
     if len(hits) > 0:
         p.write(hits[0]['passwords'][0])
     else:
