@@ -6,10 +6,6 @@ You must remember your **encryption key**, but no other passwords, as they are s
 
 This is, in my opinion, the best way to manage personal passwords. It lets you have long and complicated passwords, and different passwords for different services, without having to remember them.
 
-Yes, this is almost the same as [pwkeeper](https://github.com/murr4y/pwkeeper/), but I rewrote it in Python.
-
-## Details
-
 Pywkeeper is thoroughly documented at the [github wiki](https://github.com/murr4y/pywkeeper/wiki).
 
 ## Todo: Phone app
