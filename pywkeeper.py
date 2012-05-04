@@ -2,7 +2,6 @@
 import json, os, optparse, random, shutil
 
 from crypto import *
-from file_io import *
 from settings import *
 
 options = None
@@ -59,12 +58,14 @@ def edit():
         bytes = json.dumps(json.loads(bytes.decode('utf-8')), indent=4, ensure_ascii=False)
     except ValueError:
         print("Warning: Couldn't parse the content as JSON. Skipping pretty-printing.")
-    write_file(DECRYPTED_FILE, 'wt', bytes)
+    with open(DECRYPTED_FILE, 'wt') as f:
+        f.write(bytes)
     print("Plaintext written to: %s" % os.path.abspath(DECRYPTED_FILE))
 
 def save():
     try:
-        bytes = read_file(DECRYPTED_FILE, 'rt').encode()
+        with open(DECRYPTED_FILE, 'rt') as f:
+            bytes = f.read().encode()
     except IOError:
         print("There's no plaintext file to save!")
         print("Tried %s" % os.path.abspath(DECRYPTED_FILE))
@@ -76,7 +77,8 @@ def save():
 def encrypt_and_save(bytes):
     shutil.copyfile(ENCRYPTED_FILE, ENCRYPTED_BACKUP_FILE)
     iv, encrypted = encrypt(multiple_of(bytes, BLOCK_LENGTH))
-    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
+    with open(ENCRYPTED_FILE, 'wb') as f:
+        f.write(iv + encrypted)
 
 def generate():
     length = options.n if options.n else DEFAULT_PASSWORD_LENGTH
@@ -97,7 +99,8 @@ def initialize():
     print("Warning: If you lose this key, you lose all the passwords saved in the encrypted file.")
     print()
     iv, encrypted = encrypt(multiple_of('[]'.encode(), BLOCK_LENGTH))
-    write_file(ENCRYPTED_FILE, 'wb', iv + encrypted)
+    with open(ENCRYPTED_FILE, 'wb') as f:
+        f.write(iv + encrypted)
     print()
     print("Passwords are now stored in '%s'." % ENCRYPTED_FILE)
     print("Check out the github wiki at https://github.com/murr4y/pywkeeper/wiki for usage help.")
