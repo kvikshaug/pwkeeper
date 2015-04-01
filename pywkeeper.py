@@ -45,12 +45,12 @@ def search(phrases):
                 print("   '%s'" % password)
         elif len(hits[i-1]['passwords']) > 1:
             print("   (%s passwords)" % len(hits[i-1]['passwords']))
-    p = os.popen(CLIPBOARD_COMMAND, 'w')
     if len(hits) > 0:
+        p = os.popen(CLIPBOARD_COMMAND, 'w')
         p.write(hits[0]['passwords'][0])
+        p.close()
     else:
         print("No hits.")
-    p.close()
 
 def edit():
     bytes = decrypt()
