@@ -13,4 +13,4 @@ ENCRYPTED_BACKUP_FILE = DIR + 'data-last'
 DECRYPTED_FILE =        DIR + 'tmp'
 
 EOT_CHAR = b'\x04'
-CLIPBOARD_COMMAND = 'xclip -i'
+CLIPBOARD_COMMAND = 'xsel'
