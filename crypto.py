@@ -1,12 +1,12 @@
 from Crypto.Cipher import AES
 import os
 
-from file_io import *
 from settings import *
 
 def get_cipher(iv, text):
     try:
-        key = read_file(KEY_FILE, 'rt').strip()
+        with open(KEY_FILE, 'rt') as f:
+            key = f.read().strip()
     except IOError:
         key = input(text)
     return AES.new(key, AES.MODE_CBC, iv)
@@ -17,7 +17,8 @@ def encrypt(bytes):
     return (iv, c.encrypt(bytes))
 
 def decrypt():
-    bytes = read_file(ENCRYPTED_FILE, 'rb')
+    with open(ENCRYPTED_FILE, 'rb') as f:
+        bytes = f.read()
     c = get_cipher(bytes[:16], "Please enter the decryption key: ")
     return c.decrypt(bytes[16:]).strip(b'\x04')
 
