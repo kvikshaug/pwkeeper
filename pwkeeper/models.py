@@ -144,7 +144,7 @@ class PWKeeper:
     def generate(length=settings.DEFAULT_PASSWORD_LENGTH):
         pw = ''
         for i in range(length):
-            pw += random.choice(settings.KEY_CHARS)
+            pw += random.choice(settings.PASSWORD_CHARS)
         return pw
 
     @staticmethod

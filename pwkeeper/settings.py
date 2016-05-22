@@ -4,7 +4,7 @@ KEY_LENGTH = 256
 BLOCK_LENGTH = 16
 
 DEFAULT_PASSWORD_LENGTH = 25
-KEY_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+PASSWORD_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
 DATA_DIR = os.path.join(os.path.expanduser('~'), '.pwkeeper')
 KEY_FILE = os.path.join(DATA_DIR, 'key')
