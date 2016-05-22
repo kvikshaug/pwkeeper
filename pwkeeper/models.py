@@ -149,10 +149,10 @@ class PWKeeper:
 
     @staticmethod
     def initialize():
-        if os.path.exists(settings.DIR):
-            raise Exception("Cannot initialize, data directory already exists at: %s" % settings.DIR)
+        if os.path.exists(settings.DATA_DIR):
+            raise Exception("Cannot initialize, data directory already exists at: %s" % settings.DATA_DIR)
 
-        os.makedirs(settings.DIR)
+        os.makedirs(settings.DATA_DIR)
 
         # Create new AES key
         key = os.urandom(32)

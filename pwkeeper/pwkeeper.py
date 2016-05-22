@@ -12,8 +12,8 @@ def main():
     parser.add_argument('command', nargs='*', help='[add|edit|save|generate|<search>]')
     args = parser.parse_args()
 
-    if not os.path.exists(settings.DIR):
-        print("Initializing new data directory in %s ..." % settings.DIR)
+    if not os.path.exists(settings.DATA_DIR):
+        print("Initializing new data directory in %s ..." % settings.DATA_DIR)
         key = PWKeeper.initialize()
 
         print()
