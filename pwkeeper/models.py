@@ -63,10 +63,14 @@ class PWKeeper:
 
     def edit_plaintext(self):
         """Save all passwords decrypted in a temporary plaintext file for editing"""
+        if os.path.exists(settings.PASSWORD_FILE_PLAINTEXT):
+            print("error: Plaintext file already exists: %s" % settings.PASSWORD_FILE_PLAINTEXT)
+            return
+
         plaintext = json.dumps(self.passwords, indent=4, ensure_ascii=False)
         with open(settings.PASSWORD_FILE_PLAINTEXT, 'wt') as f:
             f.write(plaintext)
-        print("Plaintext written to: %s" % os.path.abspath(settings.PASSWORD_FILE_PLAINTEXT))
+        print("Plaintext written to: %s" % settings.PASSWORD_FILE_PLAINTEXT)
 
     def save_plaintext(self):
         """Overwrite the encrypted file with the current plaintext file"""
@@ -75,11 +79,12 @@ class PWKeeper:
                 passwords = json.loads(f.read())
 
             self._write(passwords)
-            print("Removing %s" % settings.PASSWORD_FILE_PLAINTEXT)
+            print("Removing: %s" % settings.PASSWORD_FILE_PLAINTEXT)
             os.unlink(settings.PASSWORD_FILE_PLAINTEXT)
+        except ValueError:
+            print("error: Plaintext file does not contain valid JSON: %s" % settings.PASSWORD_FILE_PLAINTEXT)
         except IOError:
-            print("There's no plaintext file to save!")
-            print("Tried: %s" % os.path.abspath(settings.PASSWORD_FILE_PLAINTEXT))
+            print("error: Plaintext file does not exist: %s" % settings.PASSWORD_FILE_PLAINTEXT)
 
     #
     # Internal methods
