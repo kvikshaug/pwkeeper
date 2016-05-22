@@ -1,21 +1,45 @@
-# Pywkeeper
+# pwkeeper
 
-Pywkeeper stores all your passwords in an encrypted file.
+Terminal-based password manager.
 
-You must remember your **encryption key**, but no other passwords, as they are stored safely and can be retrieved at any time.
+* Store all your passwords in `~/.pwkeeper`
+* Search for stored passwords and add matches to the clipboard
+* Encrypt the file for safe distribution
 
-This is, in my opinion, the best way to manage personal passwords. It lets you have long and complicated passwords, and different passwords for different services, without having to remember them.
+## Install
 
-Pywkeeper is thoroughly documented at the [github wiki](https://github.com/murr4y/pywkeeper/wiki).
+    $ pip install pwkeeper
+
+## Usage
+
+First time: Initialize your password file with a randomly generated encryption key:
+
+    $ pw
+
+Create a new password:
+
+    $ pw add
+    Usage: github.com
+    Username: ghuser
+    Password [HFXuGJv95sjL5ZmfcEfdtBSi9]:
+    Previous password file backed up at: /home/user/.pwkeeper/data-last
+    New password saved in /home/user/.pwkeeper/data
+
+Later, retrieve it to the clipboard:
+
+    $ pw github
+    1. github
+       Username: 'ghuser'
+
+Edit the password JSON in cleartext:
+
+    $ pw edit
+    Plaintext written to: /home/user/.pwkeeper/tmp
+    $ vim /home/user/.pwkeeper/tmp
+    $ pw save
+    Previous password file backed up at: /home/user/.pwkeeper/data-last
+    Removing: /home/user/.pwkeeper/tmp
 
 ## Dependencies
 
-By default, pywkeeper depends on `xclip` in order to set the clipboard. This can be changed in the settings, to any command that accepts a string on stdin and writes that to the clipboard.
-
-As for python modules, it depends on [PyCrypto](https://www.dlitz.net/software/pycrypto/).
-
-Pywkeeper is written for Python 3.
-
-## Todo: Phone app
-
-I plan to develop a phone app. This will require an additional synchronization feature, but otherwise it should work fairly similar to the terminal app.
+A command which writes input to the clipboard, like `xsel` or `xclip`.
