@@ -37,16 +37,15 @@ class PWKeeper:
         def matches(password, phrase):
             return phrase.lower() in password['usage'].lower() or phrase.lower() in password['user'].lower()
         passwords = [password for password in self.passwords if all([matches(password, phrase) for phrase in phrases])]
-        for i in range(1, len(passwords)+1):
-            user = passwords[i-1]['user']
-            if user != '':
-                user = "\n   Username: '%s'" % user
-            print("%s. %s%s" % (i, passwords[i-1]['usage'], user))
+        for i, password in enumerate(passwords, 1):
+            print("%s. %s" % (i, password['usage']))
+            if password['user'] != '':
+                print("   Username: '%s'" % password['user'])
             if display_passwords:
-                for password in passwords[i-1]['passwords']:
+                for password in password['passwords']:
                     print("   '%s'" % password)
-            elif len(passwords[i-1]['passwords']) > 1:
-                print("   (%s passwords)" % len(passwords[i-1]['passwords']))
+            elif len(password['passwords']) > 1:
+                print("   (%s passwords)" % len(password['passwords']))
         if len(passwords) > 0:
             p = os.popen(settings.CLIPBOARD_COMMAND, 'w')
             p.write(passwords[0]['passwords'][0])
