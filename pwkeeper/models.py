@@ -1,3 +1,4 @@
+import base64
 import json
 import optparse
 import os
@@ -94,9 +95,9 @@ class PWKeeper:
         """Read the AES key from key file if it exists, or ask the user for it"""
         if os.path.exists(settings.KEY_FILE):
             with open(settings.KEY_FILE, 'rt') as f:
-                return f.read().strip()
+                return base64.b64decode(f.read().strip())
         else:
-            return input("Please enter your encryption key: ")
+            return base64.b64decode(input("Please enter your encryption key (Base 64): "))
 
     def _write(self, passwords):
         """Write the given password list to the encrypted file, backing up the previous version"""
@@ -154,9 +155,10 @@ class PWKeeper:
         os.makedirs(settings.DIR)
 
         # Create new AES key
-        key = PWKeeper.generate(length=32).encode('ascii')
-        with open(settings.KEY_FILE, 'wb') as f:
-            f.write(key)
+        key = os.urandom(32)
+        key_b64encoded = base64.b64encode(key).decode('ascii')
+        with open(settings.KEY_FILE, 'wt') as f:
+            f.write(key_b64encoded)
 
         # Create and save encrypted file with empty password list
         plaintext = json.dumps([])
@@ -165,4 +167,4 @@ class PWKeeper:
             f.write(iv)
             f.write(encrypted)
 
-        return key
+        return key_b64encoded
