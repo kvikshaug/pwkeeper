@@ -24,4 +24,9 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     install_requires=['pycrypto>=2.6.1,<3'],
+    entry_points={
+        'console_scripts': [
+            'pw = pwkeeper.pwkeeper:main',
+        ],
+    },
 )

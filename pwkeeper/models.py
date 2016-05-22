@@ -7,7 +7,7 @@ import shutil
 
 from Crypto.Cipher import AES
 
-import settings
+from . import settings
 
 class PWKeeper:
     def __init__(self):

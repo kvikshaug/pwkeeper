@@ -2,10 +2,10 @@
 import argparse
 import os
 
-from models import PWKeeper
-import settings
+from .models import PWKeeper
+from . import settings
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description="Manage your passwords with pwkeeper.")
     parser.add_argument('-n', type=int, help="With 'generate', the length of the generated password")
     parser.add_argument('-p', action='store_true', help="Show passwords in cleartext when searching")
@@ -38,3 +38,6 @@ if __name__ == '__main__':
         print(PWKeeper.generate(args.n or settings.DEFAULT_PASSWORD_LENGTH))
     else:
         pw.search(args.command, args.p)
+
+if __name__ == '__main__':
+    main()
