@@ -47,9 +47,8 @@ class PWKeeper:
             elif len(password['passwords']) > 1:
                 print("   (%s passwords)" % len(password['passwords']))
         if len(passwords) > 0:
-            p = os.popen(settings.CLIPBOARD_COMMAND, 'w')
-            p.write(passwords[0]['passwords'][0])
-            p.close()
+            with os.popen(settings.CLIPBOARD_COMMAND, 'w') as p:
+                p.write(passwords[0]['passwords'][0])
         else:
             print("No hits.")
 
