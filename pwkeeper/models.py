@@ -36,28 +36,20 @@ class PWKeeper:
     def search(self, phrases, display_passwords):
         def matches(password, phrase):
             return phrase.lower() in password['usage'].lower() or phrase.lower() in password['user'].lower()
-        hits = []
-        for password in self.passwords:
-            match = True
-            for phrase in phrases:
-                if not matches(password, phrase):
-                    match = False
-                    break
-            if match:
-                hits.append(password)
-        for i in range(1, len(hits)+1):
-            user = hits[i-1]['user']
+        passwords = [password for password in self.passwords if all([matches(password, phrase) for phrase in phrases])]
+        for i in range(1, len(passwords)+1):
+            user = passwords[i-1]['user']
             if user != '':
                 user = "\n   Username: '%s'" % user
-            print("%s. %s%s" % (i, hits[i-1]['usage'], user))
+            print("%s. %s%s" % (i, passwords[i-1]['usage'], user))
             if display_passwords:
-                for password in hits[i-1]['passwords']:
+                for password in passwords[i-1]['passwords']:
                     print("   '%s'" % password)
-            elif len(hits[i-1]['passwords']) > 1:
-                print("   (%s passwords)" % len(hits[i-1]['passwords']))
-        if len(hits) > 0:
+            elif len(passwords[i-1]['passwords']) > 1:
+                print("   (%s passwords)" % len(passwords[i-1]['passwords']))
+        if len(passwords) > 0:
             p = os.popen(settings.CLIPBOARD_COMMAND, 'w')
-            p.write(hits[0]['passwords'][0])
+            p.write(passwords[0]['passwords'][0])
             p.close()
         else:
             print("No hits.")
