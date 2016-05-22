@@ -1,15 +1,16 @@
 #!/usr/bin/env python
-import optparse
+import argparse
 import os
 
 from models import PWKeeper
 import settings
 
 if __name__ == '__main__':
-    p = optparse.OptionParser(usage="usage: %prog [options] [add|edit|save|generate|<search>]")
-    p.add_option("-n", type='int', help="With 'generate', the length of the generated password")
-    p.add_option("-p", help="Show passwords when searching", action='store_true')
-    options, arguments = p.parse_args()
+    parser = argparse.ArgumentParser(description="Manage your passwords with pwkeeper.")
+    parser.add_argument('-n', type=int, help="With 'generate', the length of the generated password")
+    parser.add_argument('-p', action='store_true', help="Show passwords in cleartext when searching")
+    parser.add_argument('command', nargs='*', help='[add|edit|save|generate|<search>]')
+    args = parser.parse_args()
 
     if not os.path.exists(settings.DIR):
         print("Initializing new data directory in %s ..." % settings.DIR)
@@ -21,19 +22,19 @@ if __name__ == '__main__':
         print("Password file:     %s" % settings.PASSWORD_FILE)
         exit()
 
-    if len(arguments) == 0:
-        p.print_help()
+    if not args.command:
+        parser.print_help()
         exit()
 
     pw = PWKeeper()
 
-    if arguments[0] == 'add':
+    if args.command[0] == 'add':
         pw.add_password()
-    elif arguments[0] == 'edit':
+    elif args.command[0] == 'edit':
         pw.edit_plaintext()
-    elif arguments[0] == 'save':
+    elif args.command[0] == 'save':
         pw.save_plaintext()
-    elif arguments[0] == 'generate':
-        print(PWKeeper.generate(options.n or settings.DEFAULT_PASSWORD_LENGTH))
+    elif args.command[0] == 'generate':
+        print(PWKeeper.generate(args.n or settings.DEFAULT_PASSWORD_LENGTH))
     else:
-        pw.search(arguments, options.p)
+        pw.search(args.command, args.p)
