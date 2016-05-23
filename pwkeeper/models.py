@@ -132,10 +132,7 @@ class PWKeeper:
 
     @staticmethod
     def generate(length=settings.DEFAULT_PASSWORD_LENGTH):
-        pw = ''
-        for i in range(length):
-            pw += random.choice(settings.PASSWORD_CHARS)
-        return pw
+        return ''.join([random.choice(settings.PASSWORD_CHARS) for _ in range(length)])
 
     @staticmethod
     def initialize():
