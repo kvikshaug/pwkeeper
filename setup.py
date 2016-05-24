@@ -14,7 +14,7 @@ setup(
     url='https://github.com/kvikshaug/pwkeeper/',
     download_url='https://github.com/kvikshaug/pwkeeper/tarball/v%s' % (VERSION),
     keywords=['password', 'password-manager', 'terminal'],
-    license='WTFPL',
+    license='UNLICENSE',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
