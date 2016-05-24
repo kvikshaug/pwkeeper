@@ -2,7 +2,7 @@
 
 Terminal-based password manager.
 
-* Store all your passwords in `~/.pwkeeper`
+* Store all your passwords in `~/.pwkeeper/`
 * Search for stored passwords and add matches to the clipboard
 * Encrypt the file for safe distribution
 
@@ -35,7 +35,7 @@ Edit the password JSON in cleartext:
 
     $ pw edit
     Plaintext written to: /home/user/.pwkeeper/tmp
-    $ vim /home/user/.pwkeeper/tmp
+    $ vim ~/.pwkeeper/tmp
     $ pw save
     Previous password file backed up at: /home/user/.pwkeeper/data-last
     Removing: /home/user/.pwkeeper/tmp
